@@ -1,3 +1,4 @@
+=begin
 require 'rails_helper'
 
 module Subscribem
@@ -5,3 +6,4 @@ module Subscribem
     pending "add some examples to (or delete) #{__FILE__}"
   end
 end
+=end
