@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20151013214458) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "subscribem_accounts", force: :cascade do |t|
     t.string   "name"
     t.datetime "created_at", null: false
@@ -21,7 +24,7 @@ ActiveRecord::Schema.define(version: 20151013214458) do
     t.string   "subdomain"
   end
 
-  add_index "subscribem_accounts", ["subdomain"], name: "index_subscribem_accounts_on_subdomain"
+  add_index "subscribem_accounts", ["subdomain"], name: "index_subscribem_accounts_on_subdomain", using: :btree
 
   create_table "subscribem_members", force: :cascade do |t|
     t.integer  "account_id"

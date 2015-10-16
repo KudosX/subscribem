@@ -1,6 +1,23 @@
 require "rails_helper"
 
 describe Subscribem::Account do
+  def schema_exists?(account)
+    query = %Q{SELECT nspname FROM pg_namespace
+               WHERE nspname='#{account.subdomain}'}
+    result = ActiveRecord::Base.connection.select_value(query)
+    result.present?
+  end
+
+  it "creates a schema" do
+    account = Subscribem::Account.create!({
+          :name => "First Account",
+          :subdomain => "first"
+         })
+    account.create_schema
+    failure_message = "Schema #{account.subdomain} does not exist"
+    assert schema_exists?(account), failure_message
+  end
+
   it "can be created with an owner" do
     params = {
         :name => "Test Account",
@@ -21,7 +38,5 @@ describe Subscribem::Account do
     account = Subscribem::Account.create_with_owner
     expect(account.valid?).to eq(false)
     expect(account.users.empty?).to eq(true)
-    account.should_not be_valid
-    account.users.should be_empty
   end
 end

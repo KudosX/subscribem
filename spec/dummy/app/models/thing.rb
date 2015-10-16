@@ -1,3 +1,3 @@
 class Thing < ActiveRecord::Base
-  scoped_to_account
+  # scoped_to_account
 end
