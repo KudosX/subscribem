@@ -1,7 +1,6 @@
 require "warden"
+require "houser"
 require "dynamic_form"
-require "apartment"
-require "apartment/elevators/subdomain"
 
 module Subscribem
   class Engine < ::Rails::Engine
@@ -30,8 +29,10 @@ module Subscribem
         Rails.configuration.cache_classes ? require(file) : load(file)
       end
     end
-    initializer "subscribem.middleware.apartment" do
-      Rails.application.config.middleware.use Apartment::Elevators::Subdomain
+
+    initializer "subscribem.middleware.houser" do
+      Rails.application.config.middleware.use Houser::Middleware,
+         :class_name => "Subscribem::Account"
     end
   end
 end

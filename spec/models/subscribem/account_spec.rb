@@ -8,16 +8,6 @@ describe Subscribem::Account do
     result.present?
   end
 
-  it "creates a schema" do
-    account = Subscribem::Account.create!({
-          :name => "First Account",
-          :subdomain => "first"
-         })
-    account.create_schema
-    failure_message = "Schema #{account.subdomain} does not exist"
-    assert schema_exists?(account), failure_message
-  end
-
   it "can be created with an owner" do
     params = {
         :name => "Test Account",

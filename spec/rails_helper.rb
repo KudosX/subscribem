@@ -55,22 +55,6 @@ RSpec.configure do |config|
   # https://relishapp.com/rspec/rspec-rails/docs
   config.infer_spec_type_from_file_location!
 
-  config.after(:each) do
-    Apartment::Tenant.reset
-
-    connection = ActiveRecord::Base.connection.raw_connection
-    schemas = connection.query(%Q{
-      SELECT 'drop schema ' || nspname || ' cascade;'
-      from pg_namespace
-      where nspname != 'public'
-      AND nspname NOT LIKE 'pg_%'
-      AND nspname != 'information_schema';
-    })
-    schemas.each do |query|
-      connection.query(query.values.first)
-    end
-  end
-
   config.before(:all) do
     DatabaseCleaner.strategy = :truncation,
         {:pre_count => true, :reset_ids => true}
@@ -82,9 +66,10 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
-    Apartment::Tenant.reset
     DatabaseCleaner.clean
   end
 end
 
 Capybara.app_host = "http://example.com"
+
+
